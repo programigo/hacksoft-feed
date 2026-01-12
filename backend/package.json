@@ -1,11 +1,12 @@
 {
-  "name": "hacksoft-feed",
+  "name": "backend",
   "version": "1.0.0",
   "description": "Feedback app for HackSoft",
-  "main": "server.ts",
+  "main": "src/server.ts",
+  "type": "module",
   "scripts": {
-    "dev": "nodemon backend/server.ts",
-    "start": "node backend/server.ts"
+    "dev": "nodemon src/server.ts",
+    "start": "node src/server.ts"
   },
   "author": "Krasimir Angelov",
   "license": "MIT",
@@ -15,6 +16,7 @@
     "mongoose": "^9.1.3"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.0.6",
     "nodemon": "^3.1.11",
     "ts-node": "^10.9.2",
