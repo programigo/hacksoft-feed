@@ -1,6 +1,7 @@
 import "./config/dotenv.ts";
 import express from "express";
 import feedbackRoutes from "./routes/feedbackRoutes.ts";
+import { connectDB } from "./config/db.ts";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -11,4 +12,8 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/feedbacks", feedbackRoutes);
 
-app.listen(PORT, () => console.log("Server started on port", PORT));
+connectDB().then(() => {
+    app.listen(PORT, () => {
+        console.log("Server started on port", PORT);
+    });
+});
