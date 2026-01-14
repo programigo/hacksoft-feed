@@ -1,0 +1,24 @@
+import express from "express";
+import { upload } from "../middleware/multer.ts";
+import {
+    changePassword,
+    getMe,
+    getUser,
+    loginUser,
+    registerUser,
+    updateProfile,
+    updateProfilePicture
+} from "../controllers/userController.ts";
+import protect from "../middleware/auth.ts";
+
+const router = express.Router();
+
+router.post("/signup", upload.single("profilePicture"), registerUser);
+router.post("/login", loginUser);
+router.get("/me", protect, getMe);
+router.patch("/me", protect, updateProfile);
+router.post("/me/change-password", protect, changePassword);
+router.put("/me/update-profile-picture", protect, upload.single("profilePicture"), updateProfilePicture);
+router.get("/:id", getUser);
+
+export default router;
