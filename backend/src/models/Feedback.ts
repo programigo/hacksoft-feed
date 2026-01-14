@@ -10,6 +10,7 @@ const feedbackSchema = new mongoose.Schema(
         text: {
             type: String,
             required: [true, "The 'text' field is required"],
+            minlength: [30, "The feedback text must be at least 30 characters long"],
         },
         likes: {
             type: Number,
