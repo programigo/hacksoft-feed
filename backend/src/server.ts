@@ -1,6 +1,6 @@
 import "./config/dotenv.ts";
 import express from "express";
-import feedbackRoutes from "./routes/feedbackRoutes.ts";
+import postsRoutes from "./routes/postsRoutes.ts";
 import { connectDB } from "./config/db.ts";
 import userRoutes from "./routes/userRoutes.ts";
 import { env } from "./config/env.ts";
@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/users", userRoutes);
-app.use("/api/feedbacks", feedbackRoutes);
+app.use("/api/posts", postsRoutes);
 
 connectDB().then(() => {
     app.listen(PORT, () => {

@@ -8,7 +8,7 @@ import {
     registerUser,
     updateProfile,
     updateProfilePicture
-} from "../controllers/userController.ts";
+} from "../controllers/usersController.ts";
 import protect from "../middleware/auth.ts";
 
 const router = express.Router();

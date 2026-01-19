@@ -16,7 +16,7 @@ export default function ShareSomethingCard() {
 
             <CardFooter className="py-2">
                 <div className="flex justify-end w-full">
-                    <button className="btn btn-warning btn-sm w-[77px] text-white">
+                    <button className="btn btn-warning btn-sm w-19 text-white">
                         Post
                     </button>
                 </div>

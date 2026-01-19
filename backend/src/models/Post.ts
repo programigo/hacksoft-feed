@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const feedbackSchema = new mongoose.Schema(
+const postSchema = new mongoose.Schema(
     {
         userId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -10,7 +10,7 @@ const feedbackSchema = new mongoose.Schema(
         text: {
             type: String,
             required: [true, "The 'text' field is required"],
-            minlength: [30, "The feedback text must be at least 30 characters long"],
+            minlength: [30, "The post text must be at least 30 characters long"],
         },
         likes: {
             type: Number,
@@ -20,6 +20,6 @@ const feedbackSchema = new mongoose.Schema(
     { timestamps: true },
 );
 
-const Feedback = mongoose.model("Feedback", feedbackSchema);
+const Post = mongoose.model("Post", postSchema);
 
-export default Feedback;
+export default Post;
