@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema(
             minlength: [2, "Last name must be at least 2 characters long"],
             maxlength: [30, "Last name must be at most 30 characters long"],
         },
+        jobTitle: {
+            type: String,
+            required: [true, "The 'Job title' field is required"],
+        },
         profilePicture: {   // secure_url
             type: String,
         },

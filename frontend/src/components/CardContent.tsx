@@ -1,10 +1,13 @@
-import type { HTMLAttributes } from "react"
+import { type HTMLAttributes, type ReactNode } from "react"
 import { twMerge } from "tailwind-merge"
 
 export function CardContent({
+    children,
     className,
     ...props
-}: HTMLAttributes<HTMLDivElement>) {
+}: CardContentProps) {
+    
+
     return (
         <div
             {...props}
@@ -12,6 +15,12 @@ export function CardContent({
                 "px-3 py-4",
                 className
             )}
-        />
+        >
+            {children}
+        </div>
     )
 }
+
+type CardContentProps = {
+    children: ReactNode;
+} & HTMLAttributes<HTMLDivElement>

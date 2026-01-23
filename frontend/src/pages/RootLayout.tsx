@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import ThePageHeader from "../components/ThePageHeader";
 import Footer from "../components/Footer";
 import BackgroundAssets from "../components/BackgroundAssets";
+import { Toaster } from "react-hot-toast";
 
 export default function RootLayout() {
     return (
@@ -10,10 +11,18 @@ export default function RootLayout() {
             <BackgroundAssets />
 
             {/* Actual app UI */}
-            <div className="relative z-10 flex min-h-screen flex-col">
+            <div className="relative z-10 flex h-screen flex-col">
                 <ThePageHeader />
 
-                <main className="flex-1">
+                <Toaster
+                    position="top-center"
+                    containerStyle={{
+                        top: "4rem", // same as navbar height
+                    }}
+                />
+
+                {/* Scrollable main content */}
+                <main className="flex-1 overflow-y-auto pt-[4rem] pb-[4rem]">
                     <Outlet />
                 </main>
 

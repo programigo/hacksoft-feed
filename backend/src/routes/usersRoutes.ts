@@ -4,6 +4,7 @@ import {
     changePassword,
     getMe,
     getUser,
+    getUserStats,
     loginUser,
     registerUser,
     updateProfile,
@@ -19,6 +20,7 @@ router.get("/me", protect, getMe);
 router.patch("/me", protect, updateProfile);
 router.post("/me/change-password", protect, changePassword);
 router.put("/me/update-profile-picture", protect, upload.single("profilePicture"), updateProfilePicture);
+router.get("/me/get-stats", protect, getUserStats);
 router.get("/:id", getUser);
 
 export default router;

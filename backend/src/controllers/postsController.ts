@@ -3,8 +3,38 @@ import Post from "../models/Post.ts";
 
 export async function getPosts(req: Request, res: Response) {
     try {
-        const posts = await Post.find({}).sort({ createdAt: -1 }); // descending
-        res.status(200).json(posts);
+        // Read query oarameters
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 5;
+
+        // Calculate skip
+        const skip = (page - 1) * limit;
+
+        // Get posts in chunks
+        const posts = await Post.find({})
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .lean();
+
+        const total = await Post.countDocuments();
+
+        const userId = req.user?.id;
+
+        const response = posts.map((post) => ({
+            _id: post._id,
+            userId: post.userId,
+            text: post.text,
+            likes: post.likes,
+            createdAt: post.createdAt,
+            hasLiked: userId
+                ? post.likedBy.some(
+                    (id: any) => id.toString() === userId
+                )
+                : false,
+        }));
+
+        res.status(200).json({ posts: response, total });
     } catch (error: any) {
         console.error("An error occured while getting postss", error);
         res.status(500).json({ message: error.toString() });
@@ -28,7 +58,7 @@ export async function createPost(req: Request, res: Response) {
         res.status(201).json(post);
     } catch (error: any) {
         console.error("An error occured while creating post", error)
-        res.status(500).json({ message: error.toString() })
+        res.status(500).json({ message: error.toString() });
     }
 }
 
@@ -62,8 +92,8 @@ export async function updatePost(req: Request, res: Response) {
             post,
         });
     } catch (error: any) {
-        console.error("An error occured while updating post", error)
-        res.status(500).json({ message: error.toString() })
+        console.error("An error occured while updating post", error);
+        res.status(500).json({ message: error.toString() });
     }
 }
 
@@ -95,7 +125,45 @@ export async function deletePost(req: Request, res: Response) {
             id: postId,
         });
     } catch (error: any) {
-        console.error("An error occured while deleting post", error)
-        res.status(500).json({ message: error.toString() })
+        console.error("An error occured while deleting post", error);
+        res.status(500).json({ message: error.toString() });
+    }
+}
+
+export async function likePost(req: Request, res: Response) {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            return res.status(400).json({ message: "You need to be logged in to like a post" });
+        }
+
+        const userId = user.id;
+
+        // Atomic update - ensures the user ID is not already present,
+        // and prevents against rapid clicks and concurrent requests
+        const updatedPost = await Post.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                likedBy: { $ne: userId } // prevent duplicate likes
+            },
+            {
+                $inc: { likes: 1 },
+                $addToSet: { likedBy: userId },
+            },
+            { new: true }
+        );
+
+        if (!updatedPost) {
+            return res.status(404).json({ message: "You already liked this post or post is not found" });
+        }
+
+        res.status(200).json({
+            message: "Post liked successfully",
+            likes: updatedPost.likes,
+        });
+    } catch (error: any) {
+        console.error("An error occured while trying to like a post", error);
+        res.status(500).json({ message: error.toString() });
     }
 }

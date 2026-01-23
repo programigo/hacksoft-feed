@@ -5,7 +5,7 @@ export default function ProfilePicture({ ...props }: ProfilePictureProps) {
     return (
         <img
             {...props}
-            className={twMerge("rounded-full", props.className)}
+            className={twMerge("rounded-full object-cover", props.className)}
         />
     )
 }

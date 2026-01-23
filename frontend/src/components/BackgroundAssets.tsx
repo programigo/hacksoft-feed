@@ -34,7 +34,7 @@ export default function BackgroundAssets() {
                     z-0
                     hidden lg:block
 
-                    bottom-15
+                    bottom-10
                     left-0
 
                     w-[clamp(370px,50vw,764px)]

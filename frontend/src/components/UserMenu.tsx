@@ -3,12 +3,30 @@ import ProfilePicture from "./ProfilePicture";
 import { ChevronDown } from "lucide-react";
 import { Link } from "react-router";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { useAuth } from "../store/auth/useAuth";
+import toast from "react-hot-toast";
+import defaultProfilePicture from "../assets/profile-default-picture.svg";
+import type { User } from "../store/auth/types";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import usersService from "../services/usersService";
 
-export default function UserPanel() {
+export default function UserMenu() {
+    const { logout } = useAuth();
     const [open, setOpen] = useState(false);
+    const queryClient = useQueryClient();
 
     const buttonRef = useRef<HTMLButtonElement>(null);
     const menuRef = useRef<HTMLUListElement>(null);
+
+    const {
+    data: user,
+    isPending,
+    isError,
+    error,
+  } = useQuery<User>({
+    queryKey: ["user"],
+    queryFn: usersService.getProfile,
+  });
 
     useOutsideClick(
         [buttonRef, menuRef],
@@ -17,8 +35,10 @@ export default function UserPanel() {
     );
 
     function handleLogout() {
-        // TODO: Logout logic
+        logout();
         setOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["posts"] })
+        toast.success("Logout successful");
     }
 
     return (
@@ -35,8 +55,8 @@ export default function UserPanel() {
                 {/* Avatar */}
                 <ProfilePicture
                     className="w-9 h-9"
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    alt={user ? `${user.username}'s profile picture` : "User profile picture"}
+                    src={user?.profilePicture || defaultProfilePicture}
                 />
             </button>
 
@@ -50,7 +70,7 @@ export default function UserPanel() {
                     ${open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"}
                 `}>
                 <li>
-                    <Link to="" onClick={() => setOpen(false)}>
+                    <Link to="/users/me" onClick={() => setOpen(false)}>
                         My profile
                     </Link>
                 </li>

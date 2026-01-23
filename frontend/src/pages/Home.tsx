@@ -5,13 +5,16 @@ import Posts from "../components/Posts";
 import ProfileCard from "../components/ProfileCard";
 import Sidebar from "../components/Sidebar";
 import ShareSomethingCard from "../components/ShareSomethingCard";
+import { useAuth } from "../store/auth/useAuth";
 
 export default function Home() {
+    const { user } = useAuth();
+
     return (
         <PageContainer>
             <Content>
                 <Sidebar>
-                    <ProfileCard />
+                    {user && <ProfileCard />}
                 </Sidebar>
                 <MainCenterColumn>
                     <ShareSomethingCard />

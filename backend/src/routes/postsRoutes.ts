@@ -3,15 +3,18 @@ import {
     createPost,
     deletePost,
     getPosts,
+    likePost,
     updatePost
 } from "../controllers/postsController.ts";
 import protect from "../middleware/auth.ts";
+import optionalAuth from "../middleware/optionalAuth.ts";
 
 const router: Router = express.Router();
 
-router.get("/", getPosts);
+router.get("/", optionalAuth, getPosts);
 router.post("/", protect, createPost);
 router.put("/:id", protect, updatePost);
 router.delete("/:id", protect, deletePost);
+router.post("/:id/like", protect, likePost);
 
 export default router;

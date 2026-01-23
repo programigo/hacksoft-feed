@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import generateToken from "../utils/generateToken.ts";
 import uploadBufferToCloudinary from "../utils/uploadBufferToCloudinary.ts";
 import cloudinary from "../config/cloudinary.ts";
+import Post from "../models/Post.ts";
 
 export async function registerUser(req: Request, res: Response) {
     try {
@@ -13,10 +14,11 @@ export async function registerUser(req: Request, res: Response) {
             email,
             firstName,
             lastName,
+            jobTitle,
         } = req.body;
 
-        if (!username || !password || !email || !firstName || !lastName) {
-            return res.status(400).json({ message: "Please add all fiends required for registering a user" });
+        if (!username || !password || !email || !firstName || !lastName || !jobTitle) {
+            return res.status(400).json({ message: "Please add all fields required for registering a user" });
         }
 
         const userExists = await User.findOne({ username });
@@ -63,6 +65,7 @@ export async function registerUser(req: Request, res: Response) {
             email,
             firstName,
             lastName,
+            jobTitle,
             profilePicture: profilePictureUrl,
             profilePicturePublicId,
         });
@@ -77,6 +80,7 @@ export async function registerUser(req: Request, res: Response) {
             email: user.email,
             firstName: user.firstName,
             lastName: user.lastName,
+            jobTitle: user.jobTitle,
             profilePicture: user.profilePicture,
             token: generateToken(user._id),
         });
@@ -105,6 +109,7 @@ export async function loginUser(req: Request, res: Response) {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                jobTitle: user.jobTitle,
                 profilePicture: user.profilePicture,
                 token: generateToken(user._id),
             });
@@ -125,7 +130,9 @@ export async function getMe(req: Request, res: Response) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        res.status(200).json(user);
+        const resultUser = await User.findById(user.id).select("-password");
+
+        res.status(200).json(resultUser);
     } catch (error: any) {
         console.error(error);
         res.status(401).json({ message: error.toString() });
@@ -149,16 +156,16 @@ export async function getUser(req: Request, res: Response) {
 
 export async function updateProfile(req: Request, res: Response) {
     try {
-        const { firstName, lastName } = req.body ?? {};
+        const { firstName, lastName, jobTitle } = req.body ?? {};
 
         if (!req.user) {
             return res.status(404).json({ message: "User not found" });
         }
 
         // Validate input
-        if (firstName === undefined && lastName === undefined) {
+        if (firstName === undefined && lastName === undefined && jobTitle == undefined) {
             return res.status(400).json({
-                message: "At least one field (firstName or lastName) must be provided",
+                message: "At least one field (firstName, lastName or jobTitle) must be provided",
             });
         }
 
@@ -176,6 +183,10 @@ export async function updateProfile(req: Request, res: Response) {
             user.lastName = lastName;
         }
 
+        if (jobTitle !== undefined) {
+            user.jobTitle = jobTitle;
+        }
+
         // Save changes to the database
         await user.save();
 
@@ -187,6 +198,7 @@ export async function updateProfile(req: Request, res: Response) {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                jobTitle: user.jobTitle,
             },
         });
     } catch (error: any) {
@@ -288,8 +300,26 @@ export async function updateProfilePicture(req: Request, res: Response) {
             message: "Profile picture updated",
             profilePicture: user.profilePicture,
         });
-    } catch (error:any) {
+    } catch (error: any) {
         console.error(error);
         res.status(500).json({ message: "Error updating profile picture" + error.toString() });
+    }
+}
+
+export async function getUserStats(req: Request, res: Response) {
+    try {
+        if (!req.user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const userId = req.user.id;
+
+        const createdPostsCount = await Post.countDocuments({ userId });
+        const likedPostsCount = await Post.countDocuments({ likedBy: userId });
+
+        res.status(200).json({ createdPostsCount, likedPostsCount });
+    } catch (error: any) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to fetch user stats" + error.toString() });
     }
 }

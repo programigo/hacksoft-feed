@@ -15,7 +15,7 @@ export default async function protect(req: Request, res: Response, next: NextFun
             const decoded = jwt.verify(token, env.JWT_SECRET) as AuthTokenPayload;
 
             // Get user from the token (get only the id, username and email fields)
-            const user = await User.findById(decoded.id).select("_id username email");
+            const user = await User.findById(decoded.id);
 
             if (!user) {
                 return res.status(401).json({ message: "User not found" });
