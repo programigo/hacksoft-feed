@@ -15,7 +15,6 @@ export type LoginData = {
 
 export type AuthContextType = {
     user: User | undefined;
-    token: string | undefined;
     error: string | undefined;
     loading: boolean;
 

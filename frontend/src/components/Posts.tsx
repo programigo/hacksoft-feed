@@ -3,6 +3,9 @@ import FeedPostCard from "./FeedPostCard";
 import postsService from "../services/postsService";
 import type { PostsResponse } from "../types/posts";
 import Button from "./Button";
+import SkeletonFeedPostCard from "./skeleton/SkeletonFeedPostCard";
+import ErrorBlock from "./ErrorBlock";
+import Card from "./Card";
 
 export default function Posts() {
     const {
@@ -10,7 +13,7 @@ export default function Posts() {
         fetchNextPage,
         hasNextPage,
         isFetchingNextPage,
-        isPending,
+        isLoading,
         isError,
         error,
     } = useInfiniteQuery<PostsResponse, Error>({
@@ -28,6 +31,25 @@ export default function Posts() {
                 : undefined;
         },
     });
+
+    if (isLoading) {
+        return (
+            Array.from({ length: 5 }).map((_, i) => (
+                <SkeletonFeedPostCard key={i} />
+            ))
+        );
+    }
+
+    if (isError) {
+        return (
+            <Card>
+                <ErrorBlock
+                    title="An error occured"
+                    message={error.message || "Failed to fetch posts"}
+                />
+            </Card>
+        )
+    }
 
     const posts = data?.pages.flatMap(p => p.posts) ?? [];
 

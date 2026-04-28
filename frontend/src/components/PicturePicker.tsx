@@ -52,7 +52,7 @@ export default function PicturePicker({ image, label, onImageChange }: PicturePi
     return (
         <div className="space-y-3">
             {label && (
-                <label className="block text-sm/6 font-medium text-gray-100">
+                <label className="block text-sm font-medium text-base-content">
                     {label}
                 </label>
             )}
@@ -80,11 +80,11 @@ export default function PicturePicker({ image, label, onImageChange }: PicturePi
                         type="button"
                         onClick={() => onImageChange(null)}
                         className="
-                            absolute top-1 right-1 rounded-full p-1 
-                            bg-black/60 text-white 
-                            opacity-100 md:opacity-0 md:group-hover:opacity-100
-                            transition
-                        "
+                        absolute top-1 right-1 rounded-full p-1
+                        bg-base-300 text-base-content
+                        opacity-100 md:opacity-0 md:group-hover:opacity-100
+                        transition
+                    "
                     >
                         <X size={14} />
                     </button>
@@ -96,13 +96,15 @@ export default function PicturePicker({ image, label, onImageChange }: PicturePi
                     onDrop={handleDrop}
                     onDragOver={(e) => e.preventDefault()}
                     className="
-                        cursor-pointer rounded-full border border-dashed 
-                        w-40 h-40 flex flex-col items-center justify-center 
-                        text-center transition hover:bg-gray-50/10
-                    "
+                    cursor-pointer rounded-full border border-dashed
+                    border-base-300
+                    bg-base-100
+                    w-40 h-40 flex flex-col items-center justify-center
+                    text-center transition hover:bg-base-200
+                "
                 >
-                    <Upload className="h-6 w-6 text-gray-400" />
-                    <p className="mt-2 text-sm text-gray-300">
+                    <Upload className="h-6 w-6 text-base-content/60" />
+                    <p className="mt-2 text-sm text-base-content/70">
                         Upload
                     </p>
                 </div>

@@ -96,17 +96,15 @@ export default function ChangePassword() {
                     error={errors.confirmPassword}
                 />
 
-                <div>
-                    <Button
-                        disabled={isPending || isSubmitting}
-                        type="submit"
-                        className="w-full px-4 py-2">
-                        {(isPending || isSubmitting) && (
-                            <span className="loading loading-spinner loading-sm"></span>
-                        )}
-                        {isPending || isSubmitting ? "Updating..." : "Update"}
-                    </Button>
-                </div>
+                <Button
+                    disabled={isPending || isSubmitting}
+                    type="submit"
+                    className="w-full px-4 py-2">
+                    {(isPending || isSubmitting) && (
+                        <span className="loading loading-spinner loading-sm"></span>
+                    )}
+                    {isPending || isSubmitting ? "Updating..." : "Update"}
+                </Button>
             </Form>
         </ContentContainer>
     )

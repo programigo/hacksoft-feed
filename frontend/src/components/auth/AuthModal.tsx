@@ -1,27 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import { useQueryClient } from "@tanstack/react-query";
-import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { X } from "lucide-react";
 import BaseModal from "../layout/BaseModal";
 
 export default function AuthModal({ isOpen, intent, onClose }: AuthModalProps) {
-    const [mode, setMode] = useState<"login" | "signup">("signup");
+    const [mode, setMode] = useState<"login" | "signup">(intent === "create_post" ? "signup" : "login");
     const queryClient = useQueryClient();
-
-    const defaultMode = intent === "create_post" ? "signup" : "login";
-
-    useEffect(() => {
-        if (isOpen) {
-            setMode(defaultMode);
-        }
-    }, [isOpen, defaultMode]);
-
-
-    if (!isOpen) {
-        return null;
-    }
 
     function handleSuccess() {
         // Close modal
@@ -48,7 +33,7 @@ export default function AuthModal({ isOpen, intent, onClose }: AuthModalProps) {
                             onClick={() => setMode("signup")}
                             className="text-blue-500"
                         >
-                            Don’t have an account? Register
+                            Don't have an account? Register
                         </button>
                     ) : (
                         <button

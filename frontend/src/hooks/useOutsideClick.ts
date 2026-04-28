@@ -3,7 +3,7 @@ import { useEffect, type RefObject } from "react";
 type OutsideClickHandler = (event: MouseEvent | TouchEvent) => void;
 
 export function useOutsideClick(
-    refs: RefObject<HTMLElement | SVGElement>[],
+    refs: RefObject<HTMLElement | SVGElement | null>[],
     onOutsideClick: OutsideClickHandler,
     enabled: boolean = true
 ) {

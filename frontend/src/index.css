@@ -38,3 +38,63 @@
 .error-block p {
     margin: 0;
 }
+
+/* =======================
+   THEME TOKENS
+   ======================= */
+
+/* Light */
+:root {
+    --skeleton-rgb: 0 0 0;
+    --skeleton-muted-rgb: 0 0 0;
+
+    --skeleton-alpha: 0.06;
+    --skeleton-muted-alpha: 0.04;
+}
+
+/* Dark (only works if you toggle data-theme="dark") */
+[data-theme="dark"] {
+    --skeleton-rgb: 255 255 255;
+    --skeleton-muted-rgb: 255 255 255;
+
+    --skeleton-alpha: 0.08;
+    --skeleton-muted-alpha: 0.04;
+}
+
+/* =======================
+   TAILWIND TOKENS
+   ======================= */
+
+@theme {
+    --color-skeleton: rgb(var(--skeleton-rgb) / var(--skeleton-alpha));
+    --color-skeleton-muted: rgb(var(--skeleton-muted-rgb) / var(--skeleton-muted-alpha));
+}
+
+/* =======================
+   SKELETONS
+   ======================= */
+
+.shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-skeleton);
+}
+
+.shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg,
+            transparent,
+            var(--color-skeleton-muted),
+            transparent);
+    animation: shimmer 2s infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    to {
+        transform: translateX(100%);
+    }
+}

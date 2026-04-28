@@ -8,10 +8,11 @@ export default function FormInput({ label, registration, error, ...props }: Form
         <div>
             <label
                 htmlFor={inputId}
-                className="block text-sm/6 font-medium text-gray-100"
+                className="block text-sm font-medium text-base-content"
             >
                 {label}
             </label>
+
             <input
                 id={inputId}
                 {...props}
@@ -20,18 +21,15 @@ export default function FormInput({ label, registration, error, ...props }: Form
                     mt-2
                     w-full
                     rounded-md
-                    bg-white/5
+                    border
+                    border-base-300
+                    bg-base-100
                     px-3
-                    py-1.5
-                    text-base
-                    text-white
-                    outline-1
-                    -outline-offset-1
-                     outline-white/10
-                     placeholder:text-gray-500
-                    focus:outline-2
-                    focus:-outline-offset-2
-                     focus:outline-orange-400 sm:text-sm/6
+                    py-2
+                    text-base-content
+                    focus:outline-none
+                    focus:ring-2
+                    focus:ring-primary
                 "
             />
 

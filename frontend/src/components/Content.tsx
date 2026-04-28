@@ -4,7 +4,7 @@ export default function Content({ children }: ContentProps) {
     return (
         <div
             className="
-            relative
+                relative
                 grid
                 grid-cols-1
                 gap-6

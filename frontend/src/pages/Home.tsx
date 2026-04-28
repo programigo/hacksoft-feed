@@ -7,7 +7,7 @@ import Sidebar from "../components/Sidebar";
 import ShareSomethingCard from "../components/ShareSomethingCard";
 import { useAuth } from "../store/auth/useAuth";
 
-export default function Home() {
+export function Component() {
     const { user } = useAuth();
 
     return (

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import usersService from "../services/usersService";
-import EditProfile from "./EditProfile";
+import EditProfileForm from "./EditProfileForm";
 import BaseModal from "./layout/BaseModal";
 import ErrorBlock from "./ErrorBlock";
 
@@ -21,16 +21,18 @@ export default function EditProfileModal({ isOpen, onClose }: EditProfileModalPr
 
     if (isError) {
         return (
-            <ErrorBlock
-                title="An error occured"
-                message={error.message || "Failed to fetch user"}
-            />
+            <BaseModal isOpen={isOpen} onClose={onClose} title="Edit profile">
+                <ErrorBlock
+                    title="An error occured"
+                    message={error.message || "Failed to fetch user"}
+                />
+            </BaseModal>
         )
     }
 
     return (
         <BaseModal isOpen={isOpen} onClose={onClose} title="Edit profile">
-            <EditProfile user={user} />
+            <EditProfileForm user={user} onSuccess={onClose} variant="modal" />
         </BaseModal>
     )
 }

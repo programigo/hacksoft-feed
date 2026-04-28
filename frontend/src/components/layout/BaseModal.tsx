@@ -40,17 +40,17 @@ export default function BaseModal({ isOpen, onClose, title, children, className 
         <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
             <div
                 ref={modalRef}
-                className={`bg-white dark:bg-gray-900 rounded-xl w-full max-w-md max-h-[85vh] overflow-y-auto relative flex flex-col ${className ?? ""}`}
+                className={`bg-base-100 rounded-xl w-full max-w-md max-h-[85vh] overflow-y-auto relative flex flex-col ${className ?? ""}`}
             >
                 {/* Header */}
-                <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
-                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                <div className="flex justify-between items-center p-4 border-b border-base-300">
+                    <h2 className="text-lg font-semibold text-base-content">
                         {title}
                     </h2>
 
                     <button
                         onClick={onClose}
-                        className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-200"
+                        className="text-base-content/60 hover:text-base-content"
                     >
                         <X size={22} />
                     </button>

@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 
 export default function RootLayout() {
     return (
-        <div className="relative min-h-screen overflow-hidden bg-base-100">
+        <div className="relative min-h-screen overflow-hidden">
             {/* Decorative background */}
             <BackgroundAssets />
 

@@ -35,6 +35,7 @@ export default function LoginForm({ onSuccess, variant }: LoginFormProps) {
             toast.error(error.message || "Login failed");
         }
     }
+    
     return (
         <Form
             onSubmit={handleSubmit(onSubmit)}

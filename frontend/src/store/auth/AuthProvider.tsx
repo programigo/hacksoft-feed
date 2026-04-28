@@ -95,7 +95,6 @@ export default function AuthContextProvider({ children }: AuthProviderProps) {
 
     const contextValue = {
         user,
-        token,
         error,
         loading,
         login,

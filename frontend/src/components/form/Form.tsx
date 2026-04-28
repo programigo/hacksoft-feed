@@ -5,26 +5,18 @@ export default function Form({ children, text, variant = "default", ...props }: 
         <div
             className={
                 variant === "modal"
-                    ? "w-full" // modal handles centering
-                    : "flex min-h-0 items-center justify-center bg-muted/40 px-4 py-6"
+                    ? "w-full"
+                    : "flex flex-col"
             }
         >
-            <div
-                className={`w-full max-w-sm rounded-xl p-6 shadow-sm ${
-                    variant === "modal" ? "bg-white dark:bg-gray-900" : "bg-background"
-                }`}
-            >
+            <div className="w-full rounded-xl p-6 shadow-md bg-base-100">
                 {text && (
-                    <h2
-                        className={`mb-6 text-center text-2xl font-semibold tracking-tight ${
-                            variant === "modal" ? "text-gray-900 dark:text-white" : ""
-                        }`}
-                    >
+                    <h2 className="mb-6 text-center text-2xl font-semibold text-base-content">
                         {text}
                     </h2>
                 )}
 
-                <form {...props} className="space-y-4">
+                <form {...props} className="space-y-4 min-h-[200px]">
                     {children}
                 </form>
             </div>

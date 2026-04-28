@@ -7,7 +7,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "./Button";
-import { useNavigate } from "react-router";
 import ContentContainer from "./layout/ContentContainer";
 import type { User } from "../types/users";
 
@@ -23,8 +22,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function EditProfile({ user }: EditProfileProps) {
-    const navigate = useNavigate();
+export default function EditProfileForm({ user, onSuccess, variant }: EditProfileFormProps) {
     const queryClient = useQueryClient();
 
     const {
@@ -44,7 +42,8 @@ export default function EditProfile({ user }: EditProfileProps) {
         onSuccess: async () => {
             toast.success("Profile data edited successfully");
             await queryClient.invalidateQueries({ queryKey: ["user"] });
-            navigate("/");
+
+            onSuccess();
         },
         onError: (err: Error) => {
             toast.error(err.message);
@@ -65,6 +64,7 @@ export default function EditProfile({ user }: EditProfileProps) {
             <Form
                 onSubmit={handleSubmit(onSubmit)}
                 text="Edit Personal Details"
+                variant={variant}
             >
                 <FormInput
                     label="First name"
@@ -78,22 +78,22 @@ export default function EditProfile({ user }: EditProfileProps) {
                     error={errors.lastName}
                 />
 
-                <div>
-                    <Button
-                        disabled={isPending || isSubmitting}
-                        type="submit"
-                        className="w-full px-4 py-2">
-                        {(isPending || isSubmitting) && (
-                            <span className="loading loading-spinner loading-sm"></span>
-                        )}
-                        {isPending || isSubmitting ? "Saving..." : "Save"}
-                    </Button>
-                </div>
+                <Button
+                    disabled={isPending || isSubmitting}
+                    type="submit"
+                    className="w-full px-4 py-2">
+                    {(isPending || isSubmitting) && (
+                        <span className="loading loading-spinner loading-sm"></span>
+                    )}
+                    {isPending || isSubmitting ? "Saving..." : "Save"}
+                </Button>
             </Form>
         </ContentContainer>
     )
 }
 
-type EditProfileProps = {
+type EditProfileFormProps = {
     user: User;
+    onSuccess: () => void;
+    variant?: "default" | "modal";
 }

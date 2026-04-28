@@ -3,20 +3,20 @@ import Card from "./Card";
 import ProfilePicture from "./ProfilePicture";
 import CardHeader from "./CardHeader";
 import { CardFooter } from "./CardFooter";
-import type { User } from "../store/auth/types";
 import defaultProfilePicture from "../assets/profile-default-picture.svg";
-import { truncateText } from "../utils/text";
 import { useQuery } from "@tanstack/react-query";
 import usersService from "../services/usersService";
 import { useState } from "react";
 import EditProfileModal from "./EditProfileModal";
+import SkeletonProfileCard from "./skeleton/SkeletonProfileCard";
+import ErrorBlock from "./ErrorBlock";
 
 export default function ProfileCard() {
     const [editProfileModalOpen, setEditProfileModalOpen] = useState<boolean>(false);
 
     const {
         data: user,
-        isPending,
+        isLoading,
         isError,
         error,
     } = useQuery({
@@ -31,8 +31,19 @@ export default function ProfileCard() {
         queryFn: usersService.getUserStats,
     });
 
-    if (isPending) {
-        return null;
+    if (isLoading) {
+        return <SkeletonProfileCard />;
+    }
+
+    if (isError) {
+        return (
+            <Card>
+                <ErrorBlock
+                    title="An error occured"
+                    message={error.message || "Failed to fetch profile info"}
+                />
+            </Card>
+        )
     }
 
     return (
@@ -51,7 +62,7 @@ export default function ProfileCard() {
                     subtitle={user?.jobTitle}
                     meta={
                         <button
-                        onClick={() => setEditProfileModalOpen(true)}
+                            onClick={() => setEditProfileModalOpen(true)}
                             className="text-base-content/60 hover:text-base-content cursor-pointer"
                             aria-label="Edit profile"
                         >

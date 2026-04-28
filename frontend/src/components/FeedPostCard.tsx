@@ -17,6 +17,8 @@ import Button from "./Button";
 import postsService from "../services/postsService";
 import toast from "react-hot-toast";
 import AuthModal, { type AuthIntent } from "./auth/AuthModal";
+import SkeletonFeedPostCard from "./skeleton/SkeletonFeedPostCard";
+import ErrorBlock from "./ErrorBlock";
 
 const MAX_CHARS = 100;
 
@@ -40,7 +42,7 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
     // Fetch post creator info
     const {
         data: postCreator,
-        isPending,
+        isLoading,
         isError,
         error,
     } = useQuery<User>({
@@ -123,8 +125,31 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
         toast.success("Post shared");
     }
 
-    if (isPending || !postCreator) {
-        return "loading..."
+    if (isLoading) {
+        return <SkeletonFeedPostCard />
+    }
+
+    if (!postCreator) {
+        return (
+            <Card>
+                <ErrorBlock
+                    title="No post creator data"
+                    message="Something went wrong. Please try again."
+                />
+            </Card>
+
+        )
+    }
+
+    if (isError) {
+        return (
+            <Card>
+                <ErrorBlock
+                    title="An error occured"
+                    message={error.message || "Failed to fetch post creator"}
+                />
+            </Card>
+        )
     }
 
     return (
@@ -175,11 +200,9 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
 
                 <CardFooter>
                     <button
-                        disabled={post.hasLiked}
                         onClick={handleLike}
                         className={`
                         flex items-center gap-2
-                        ${!post.hasLiked ? "cursor-pointer" : undefined}
                         ${isGuest ? "opacity-60 hover:opacity-100" : undefined}
                     `}
                     >
