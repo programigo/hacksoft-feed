@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import { ChevronDown } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useOutsideClick } from "../hooks/useOutsideClick";
 import { useAuth } from "../store/auth/useAuth";
 import toast from "react-hot-toast";
@@ -11,6 +11,7 @@ import usersService from "../services/usersService";
 
 export default function UserMenu() {
     const { logout } = useAuth();
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const queryClient = useQueryClient();
 
@@ -36,6 +37,8 @@ export default function UserMenu() {
         setOpen(false);
         queryClient.invalidateQueries({ queryKey: ["posts"] })
         toast.success("Logout successful");
+
+        navigate("/");
     }
 
     const displayUser = user ?? null;
