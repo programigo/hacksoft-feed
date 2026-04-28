@@ -11,6 +11,7 @@ import usersService from "../services/usersService";
 import { useNavigate } from "react-router";
 import PageContainer from "../components/layout/PageContainer";
 import SkeletonProfileDetails from "../components/skeleton/SkeletonProfileDetails";
+import PageContent from "../components/PageContent";
 
 export function Component() {
   const navigate = useNavigate();
@@ -56,39 +57,41 @@ export function Component() {
 
   return (
     <PageContainer>
-      <div className="p-6">
-        <div className="w-full max-w-4xl bg-base-100 rounded-2xl shadow-xl">
-          {/* Profile Header */}
-          <div className="pt-10 md:pt-14 pb-6 flex flex-col items-center space-y-4">
-            <ProfileAvatar
-              user={user}
-              defaultProfilePicture={defaultProfilePicture}
-            />
+      <PageContent>
+        <div className="p-6">
+          <div className="w-full max-w-4xl bg-base-100 rounded-2xl shadow-xl">
+            {/* Profile Header */}
+            <div className="pt-10 md:pt-14 pb-6 flex flex-col items-center space-y-4">
+              <ProfileAvatar
+                user={user}
+                defaultProfilePicture={defaultProfilePicture}
+              />
 
-            <h2 className="text-4xl font-bold">{user.username}</h2>
+              <h2 className="text-4xl font-bold">{user.username}</h2>
 
-            {/* Navigation Tabs */}
-            <NavigationTabs
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
-            />
-          </div>
+              {/* Navigation Tabs */}
+              <NavigationTabs
+                activeTab={activeTab}
+                onTabChange={setActiveTab}
+              />
+            </div>
 
-          {/* CONTENT */}
-          <div className="px-6 pb-10 md:pb-14">
-            <div className="min-h-130">
-              {/* PERSONAL DETAILS OVERVIEW */}
-              {activeTab === "overview" && <PersonalDetails user={user} />}
+            {/* CONTENT */}
+            <div className="px-6 pb-10 md:pb-14">
+              <div className="min-h-130">
+                {/* PERSONAL DETAILS OVERVIEW */}
+                {activeTab === "overview" && <PersonalDetails user={user} />}
 
-              {/* EDIT PROFILE */}
-              {activeTab === "edit" && <EditProfileForm user={user} onSuccess={() => navigate("/")} />}
+                {/* EDIT PROFILE */}
+                {activeTab === "edit" && <EditProfileForm user={user} onSuccess={() => navigate("/")} />}
 
-              {/* CHANGE PASSWORD */}
-              {activeTab === "password" && <ChangePassword />}
+                {/* CHANGE PASSWORD */}
+                {activeTab === "password" && <ChangePassword />}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </PageContent>
     </PageContainer>
   );
 }
