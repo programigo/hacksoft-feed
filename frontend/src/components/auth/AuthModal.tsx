@@ -57,5 +57,6 @@ type AuthModalProps = {
 
 export type AuthIntent =
     | "like_post"
+    | "unlike_post"
     | "share_post"
     | "create_post";

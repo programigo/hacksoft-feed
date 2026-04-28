@@ -167,3 +167,39 @@ export async function likePost(req: Request, res: Response) {
         res.status(500).json({ message: error.toString() });
     }
 }
+
+export async function unlikePost(req: Request, res: Response) {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            return res.status(400).json({ message: "You need to be logged in to unlike a post" });
+        }
+
+        const userId = user.id;
+
+        const updatedPost = await Post.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                likedBy: userId,
+            },
+            {
+                $inc: { likes: -1 },
+                $pull: { likedBy: userId },
+            },
+            { new: true }
+        );
+
+        if (!updatedPost) {
+            return res.status(404).json({ message: "You haven't liked this post or post is not found" });
+        }
+
+        res.status(200).json({
+            message: "Post unliked successfully",
+            likes: updatedPost.likes,
+        });
+    } catch (error: any) {
+        console.error("An error occured while trying to unlike a post", error);
+        res.status(500).json({ message: error.toString() });
+    }
+}

@@ -51,7 +51,7 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
     });
 
     // Like mutation with optimistic update
-    const { mutate } = useMutation({
+    const { mutate: likeMutate } = useMutation({
         mutationFn: () => postsService.likePost(post._id),
 
         // Optimistic update
@@ -97,6 +97,53 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
         },
     });
 
+    // Unlike mutation with optimistic update
+    const { mutate: unlikeMutate } = useMutation({
+        mutationFn: () => postsService.unlikePost(post._id),
+
+        // Optimistic update
+        onMutate: async () => {
+            await queryClient.cancelQueries({ queryKey: ["posts"] });
+
+            const previousData = queryClient.getQueryData<{
+                pages: PostsResponse[];
+                pageParams: unknown[];
+            }>(["posts"]);
+
+            if (!previousData) {
+                return { previousData: undefined };
+            }
+
+            queryClient.setQueryData(["posts"], {
+                ...previousData,
+                pages: previousData.pages.map(page => ({
+                    ...page,
+                    posts: page.posts.map(p =>
+                        p._id === post._id
+                            ? { ...p, likes: Math.max(0, p.likes - 1), hasLiked: false }
+                            : p
+                    ),
+                })),
+            });
+
+            return { previousData };
+        },
+
+        onSettled: () => {
+            // Refetch posts so new unlikes appear
+            queryClient.invalidateQueries({ queryKey: ["posts"] });
+            queryClient.invalidateQueries({ queryKey: ["user", "stats"] });
+        },
+
+        onError: (_err, _postId, context) => {
+            if (context?.previousData) {
+                queryClient.setQueryData(["posts"], context.previousData);
+            }
+
+            toast.error("Failed to unlike post");
+        },
+    });
+
     /** Actions */
 
     function requireAuth(intent: AuthIntent): void {
@@ -112,7 +159,19 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
 
         // Like the post only if the user hasn't liked it yet
         if (!post.hasLiked) {
-            mutate();
+            likeMutate();
+        }
+    }
+
+    function handleUnlike() {
+        if (isGuest) {
+            requireAuth("unlike_post");
+            return;
+        }
+
+        // Unlike post only if the user hasn't unliked it yet
+        if (post.hasLiked) {
+            unlikeMutate();
         }
     }
 
@@ -200,13 +259,13 @@ export default function FeedPostCard({ post }: FeedPostCardProps) {
 
                 <CardFooter>
                     <button
-                        onClick={handleLike}
+                        onClick={post.hasLiked ? handleUnlike : handleLike}
                         className={`
                         flex items-center gap-2
                         ${isGuest ? "opacity-60 hover:opacity-100" : undefined}
                     `}
                     >
-                        <ThumbsUp />
+                        <ThumbsUp fill={post.hasLiked ? "#FD7500" : "none"} />
                         {post.hasLiked ? "Liked" : "Like"}
                     </button>
 

@@ -112,12 +112,33 @@ async function likePost(id: string) {
     }
 }
 
+async function unlikePost(id: string) {
+    try {
+        const token = authService.getToken();
+
+        const response: AxiosResponse = await axios.post(API_URL + id + "/unlike", null, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        return response.data;
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            throw new Error(error?.response?.data?.message || "Failed to unlike post");
+        }
+
+        throw new Error("Unexpected error occurred");
+    }
+}
+
 const postsService = {
     getPosts,
     createPost,
     updatePost,
     deletePost,
     likePost,
+    unlikePost,
 };
 
 export default postsService;
