@@ -1,73 +1,82 @@
-# React + TypeScript + Vite
+# HackSoft Feed
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HackSoft Feed is a small full-stack social/feedback app.
 
-Currently, two official plugins are available:
+Core features:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Users can sign up / log in
+- Authenticated users can view their profile (`/users/me`) and update profile details
+- Users can create and browse posts in a feed
+- Profile pictures / uploads are handled via Cloudinary
 
-## React Compiler
+This repository contains:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `frontend/`: React + TypeScript + Vite
+- `backend/`: Node + Express + MongoDB (Mongoose) + JWT auth
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js (v18+ recommended)
+- MongoDB running locally or accessible via connection string
+- A Cloudinary account (for image uploads)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Setup
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Quick start (recommended)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Create backend env file: `backend/.env`
+2. Start backend and frontend in two separate terminals.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Backend
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Open a terminal in the repo root
+2. Install backend dependencies:
+   - `cd backend`
+   - `npm install`
+3. Create an environment file at `backend/.env` with the required variables:
+   - `PORT` (the frontend expects the backend at `http://localhost:5001`, so set `PORT=5001`)
+   - `MONGO_URI` (MongoDB connection string)
+   - `JWT_SECRET` (used for signing/verifying auth tokens)
+   - `CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+4. Start the backend:
+   - `npm run dev`
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The backend exposes:
+
+- `http://localhost:5001/api/users/...`
+- `http://localhost:5001/api/posts/...`
+
+### Frontend
+
+1. From the repo root:
+   - `cd frontend`
+   - `npm install`
+2. Start the frontend:
+   - `npm run dev`
+
+Vite will start a dev server (usually on `http://localhost:5173`).
+
+## Development Notes
+
+- The frontend service layer currently hardcodes the API base URL to `http://localhost:5001`.
+  If you change the backend port, update:
+  - `frontend/src/services/authService.ts`
+  - `frontend/src/services/usersService.ts`
+  - `frontend/src/services/postsService.ts`
+
+### Run both locally (two terminals)
+
+Terminal 1 (backend):
+
+- `cd backend && npm run dev`
+
+Terminal 2 (frontend):
+
+- `cd frontend && npm run dev`
+
+## Useful commands
+
+- Frontend: `npm run dev`, `npm run build`, `npm run lint`
+- Backend: `npm run dev`, `npm run start`
