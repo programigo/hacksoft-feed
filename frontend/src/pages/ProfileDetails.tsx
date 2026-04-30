@@ -37,20 +37,20 @@ export function Component() {
     )
   }
 
+  if (isError) {
+    return (
+      <ErrorBlock
+        title="An error occured"
+        message={error?.message || "Failed to fetch user"}
+      />
+    )
+  }
+
   if (!user) {
     return (
       <ErrorBlock
         title="No user data"
         message="Something went wrong. Please try again."
-      />
-    )
-  }
-
-  if (isError) {
-    return (
-      <ErrorBlock
-        title="An error occured"
-        message={error.message || "Failed to fetch user"}
       />
     )
   }

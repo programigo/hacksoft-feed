@@ -9,11 +9,9 @@ import type { ImageFile } from "../../types/images";
 import PicturePicker from "../PicturePicker";
 import toast from "react-hot-toast";
 import Button from "../Button";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function SignupForm({ onSuccess, variant }: SignupFormProps) {
-    const { error, loading, signup, clearError } = useAuth();
-    const queryClient = useQueryClient();
+    const { loading, signup } = useAuth();
 
     const [profilePicture, setProfilePicture] = useState<ImageFile | null>(null);
 
