@@ -1,5 +1,5 @@
 import { type Request, type Response } from "express";
-import Post from "../models/Post.ts";
+import Post from "../models/Post.js";
 
 export async function getPosts(req: Request, res: Response) {
     try {

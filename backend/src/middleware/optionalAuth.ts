@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import { env } from "../config/env.ts";
+import { env } from "../config/env.js";
 import jwt, { type JwtPayload } from "jsonwebtoken";
-import User from "../models/User.ts";
+import User from "../models/User.js";
 
 export default async function optionalAuth(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;

@@ -1,4 +1,4 @@
-import cloudinary from "../config/cloudinary.ts";
+import cloudinary from "../config/cloudinary.js";
 import { type UploadApiErrorResponse, type UploadApiResponse, type UploadStream } from "cloudinary";
 
 // Helper to upload buffer to Cloudinary via upload_stream and return the result

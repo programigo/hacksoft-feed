@@ -1,10 +1,10 @@
 import { type Request, type Response } from "express";
-import User from "../models/User.ts";
+import User from "../models/User.js";
 import bcrypt from "bcryptjs";
-import generateToken from "../utils/generateToken.ts";
-import uploadBufferToCloudinary from "../utils/uploadBufferToCloudinary.ts";
-import cloudinary from "../config/cloudinary.ts";
-import Post from "../models/Post.ts";
+import generateToken from "../utils/generateToken.js";
+import uploadBufferToCloudinary from "../utils/uploadBufferToCloudinary.js";
+import cloudinary from "../config/cloudinary.js";
+import Post from "../models/Post.js";
 
 export async function registerUser(req: Request, res: Response) {
     try {

@@ -6,9 +6,9 @@ import {
     likePost,
     unlikePost,
     updatePost
-} from "../controllers/postsController.ts";
-import protect from "../middleware/auth.ts";
-import optionalAuth from "../middleware/optionalAuth.ts";
+} from "../controllers/postsController.js";
+import protect from "../middleware/auth.js";
+import optionalAuth from "../middleware/optionalAuth.js";
 
 const router: Router = express.Router();
 

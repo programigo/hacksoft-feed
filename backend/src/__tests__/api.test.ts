@@ -21,10 +21,10 @@ describe("API integration (users)", () => {
         process.env.CLOUDINARY_API_SECRET = "test";
 
         // Import after env variables are set
-        const appModule = await import("../app.ts");
+        const appModule = await import("../app.js");
         app = appModule.default;
 
-        const dbModule = await import("../config/db.ts");
+        const dbModule = await import("../config/db.js");
         await dbModule.connectDB();
     });
 

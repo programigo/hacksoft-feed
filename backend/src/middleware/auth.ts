@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt, { type JwtPayload } from "jsonwebtoken";
-import { env } from "../config/env.ts";
-import User from "../models/User.ts";
+import { env } from "../config/env.js";
+import User from "../models/User.js";
 
 export default async function protect(req: Request, res: Response, next: NextFunction) {
     let token;

@@ -1,5 +1,5 @@
 import express from "express";
-import { upload } from "../middleware/multer.ts";
+import { upload } from "../middleware/multer.js";
 import {
     changePassword,
     getMe,
@@ -9,8 +9,8 @@ import {
     registerUser,
     updateProfile,
     updateProfilePicture
-} from "../controllers/usersController.ts";
-import protect from "../middleware/auth.ts";
+} from "../controllers/usersController.js";
+import protect from "../middleware/auth.js";
 
 const router = express.Router();
 
