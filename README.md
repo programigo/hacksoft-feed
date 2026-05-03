@@ -1,4 +1,8 @@
-# HackSoft Feed
+## Demo
+
+Live demo: https://hacksoft-feed.vercel.app
+
+## Overview
 
 HackSoft Feed is a small full-stack social/feedback app.
 
