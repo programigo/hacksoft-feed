@@ -1,7 +1,8 @@
 import axios, { type AxiosResponse } from "axios";
 import type { LoginData } from "../store/auth/types";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5001/api/users/";
+const API_URL = `${API_BASE_URL}/users/`;
 
 // Register user
 async function signup(signupData: FormData) {

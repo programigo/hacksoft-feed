@@ -1,9 +1,9 @@
 import axios, { type AxiosResponse } from "axios";
 import authService from "./authService";
 import type { CreatePostModel, PostsResponse, UpdatePostModel } from "../types/posts";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5001/api/posts/";
-const USERS_API_URL = "http://localhost:5001/api/users/";
+const API_URL = `${API_BASE_URL}/posts/`;
 
 async function getPosts(page: number, limit: number): Promise<PostsResponse> {
     const token = authService.getToken();

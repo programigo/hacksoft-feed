@@ -2,9 +2,10 @@ import type { AxiosResponse } from "axios";
 import axios from "axios";
 import authService from "./authService";
 import type { UpdateProfilePictureResponse } from "../types/images";
-import type { User, UserStats } from "../types/users";
+import type { ChangePasswordPayload, User, UserStats } from "../types/users";
+import { API_BASE_URL } from "../config/api";
 
-const API_URL = "http://localhost:5001/api/users/";
+const API_URL = `${API_BASE_URL}/users/`;
 
 export async function getProfile(): Promise<User> {
     try {
@@ -60,7 +61,7 @@ export async function getUserStats(): Promise<UserStats> {
     }
 }
 
-export async function editProfile(userInfo) {
+export async function editProfile(userInfo: Partial<Omit<User, "_id">>) {
     try {
         const token = authService.getToken();
 
@@ -103,7 +104,7 @@ export async function updateProfilePicture(formData: FormData): Promise<UpdatePr
     }
 }
 
-export async function changePassword(changePasswordData) {
+export async function changePassword(changePasswordData: ChangePasswordPayload) {
     try {
         const token = authService.getToken();
 

@@ -12,3 +12,9 @@ export type UserStats = {
     createdPostsCount: number;
     likedPostsCount: number;
 }
+
+export type ChangePasswordPayload = {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}

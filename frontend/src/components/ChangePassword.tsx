@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "./Button";
 import ContentContainer from "./layout/ContentContainer";
+import type { ChangePasswordPayload } from "../types/users";
 
 const formSchema = z.object({
     currentPassword: z.string().min(1, "The current password field is required."),
@@ -60,7 +61,7 @@ export default function ChangePassword() {
     });
 
     function onSubmit(values: FormValues) {
-        const changePasswordData = {
+        const changePasswordData: ChangePasswordPayload = {
             currentPassword: values.currentPassword,
             newPassword: values.newPassword,
             confirmPassword: values.confirmPassword,
